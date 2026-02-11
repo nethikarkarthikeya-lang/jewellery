@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elegant Jewellery</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f4f0;
+}
+
+header {
+    background-color: #b76e79;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #333;
+    color: white;
+}
+
+nav h2 {
+    margin: 0;
+}
+
+.cart {
+    cursor: pointer;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.product {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+button {
+    background-color: #b76e79;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #a05560;
+}
+
+#cartModal {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: -3px 0 5px rgba(0,0,0,0.3);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#cartModal h3 {
+    margin-top: 0;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Elegant Jewellery Collection</h1>
+</header>
+
+<nav>
+    <h2>Shop</h2>
+    <div class="cart" onclick="toggleCart()">🛒 Cart (<span id="cartCount">0</span>)</div>
+</nav>
+
+<section class="products">
+    <div class="product">
+        <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a3f3d" alt="Gold Necklace">
+        <h3>Gold Necklace</h3>
+        <p>$150</p>
+        <button onclick="addToCart('Gold Necklace',150)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://images.unsplash.com/photo-1589987607627-1a06a9b78c18" alt="Diamond Ring">
+        <h3>Diamond Ring</h3>
+        <p>$300</p>
+        <button onclick="addToCart('Diamond Ring',300)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed" alt="Silver Bracelet">
+        <h3>Silver Bracelet</h3>
+        <p>$100</p>
+        <button onclick="addToCart('Silver Bracelet',100)">Add to Cart</button>
+    </div>
+</section>
+
+<div id="cartModal">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <h4>Total: $<span id="totalPrice">0</span></h4>
+    <button onclick="checkout()">Purchase</button>
+    <button onclick="toggleCart()">Close</button>
+</div>
+
+<script>
+let cart = [];
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    updateCart();
+}
+
+function updateCart() {
+    document.getElementById("cartCount").innerText = cart.length;
+    let cartItems = document.getElementById("cartItems");
+    cartItems.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+        total += item.price;
+        cartItems.innerHTML += `
+            <div class="cart-item">
+                <p>${item.name} - $${item.price}</p>
+            </div>
+        `;
+    });
+
+    document.getElementById("totalPrice").innerText = total;
+}
+
+function toggleCart() {
+    let modal = document.getElementById("cartModal");
+    modal.style.display = modal.style.display === "block" ? "none" : "block";
+}
+
+function checkout() {
+    if(cart.length === 0){
+        alert("Your cart is empty!");
+        return;
+    }
+    alert("Thank you for your purchase!");
+    cart = [];
+    updateCart();
+    toggleCart();
+}
+</script>
+
+</body>
+</html>
